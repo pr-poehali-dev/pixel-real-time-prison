@@ -1,7 +1,15 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Pixel';
+  src: url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+  font-style: normal;
+  font-weight: 400;
+}
+ 
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -9,109 +17,83 @@
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-
+ 
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-
+ 
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
-
+ 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-
+ 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
+ 
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
-
+ 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
-
+ 
     --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
-
+ 
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
+ 
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
+ 
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
+ 
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
-
+ 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
+ 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-
+ 
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-
+ 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
+ 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
-
+ 
 @layer base {
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
   }
 }
 
-/* Пиксельный шрифт */
-@font-face {
-  font-family: 'PixelFont';
-  src: url('data:font/woff2;base64,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') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+.font-pixel {
+  font-family: 'Press Start 2P', monospace;
+  text-rendering: pixelated;
+  letter-spacing: 0.05em;
 }
 
-.font-pixel {
-  font-family: 'PixelFont', monospace;
-  letter-spacing: 1px;
-  image-rendering: pixelated;
-  text-rendering: optimizeSpeed;
+/* Анимация для перехода между страницами */
+.transition-colors {
+  transition-property: background-color, color, border-color;
+}
+
+.duration-3000 {
+  transition-duration: 3000ms;
 }
