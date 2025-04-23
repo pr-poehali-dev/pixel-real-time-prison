@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface PrisonTimerProps {
   endTime: Date;
@@ -18,6 +19,7 @@ const PrisonTimer: React.FC<PrisonTimerProps> = ({ endTime, duration, onComplete
   const [dialogOpen, setDialogOpen] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [activeTab, setActiveTab] = useState("complete");
   const intervalRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -86,8 +88,13 @@ const PrisonTimer: React.FC<PrisonTimerProps> = ({ endTime, duration, onComplete
     }
   };
 
+  const handleCompleteGame = () => {
+    onComplete();
+    setDialogOpen(false);
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && activeTab === "exit") {
       handlePasswordSubmit();
     }
   };
@@ -115,7 +122,7 @@ const PrisonTimer: React.FC<PrisonTimerProps> = ({ endTime, duration, onComplete
               onClick={() => setDialogOpen(true)}
               className="text-xs text-gray-600 hover:text-gray-400 transition-colors duration-300 font-pixel underline"
             >
-              ВВЕСТИ ПАРОЛЬ ДЛЯ ВЫХОДА
+              МЕНЮ ЗАКЛЮЧЕННОГО
             </button>
           </div>
         </div>
@@ -124,30 +131,72 @@ const PrisonTimer: React.FC<PrisonTimerProps> = ({ endTime, duration, onComplete
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="bg-gray-800 border-gray-700 text-gray-200 font-pixel">
           <DialogHeader>
-            <DialogTitle className="text-center text-gray-200">ВВОД ПАРОЛЯ</DialogTitle>
+            <DialogTitle className="text-center text-gray-200 mb-4">МЕНЮ ЗАКЛЮЧЕННОГО</DialogTitle>
           </DialogHeader>
-          <div className="py-4">
-            <Input
-              type="password"
-              placeholder="Введите пароль..."
-              className="bg-gray-900 border-gray-700 text-gray-200 font-pixel text-center"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyPress={handleKeyPress}
-            />
-            {passwordError && (
-              <p className="text-red-500 text-xs mt-2 text-center">{passwordError}</p>
-            )}
-          </div>
-          <DialogFooter className="sm:justify-center">
-            <Button
-              variant="secondary"
-              className="font-pixel bg-gray-700 hover:bg-gray-600"
-              onClick={handlePasswordSubmit}
-            >
-              ПОДТВЕРДИТЬ
-            </Button>
-          </DialogFooter>
+          
+          <Tabs 
+            defaultValue="complete" 
+            value={activeTab} 
+            onValueChange={setActiveTab}
+            className="w-full"
+          >
+            <TabsList className="grid w-full grid-cols-2 bg-gray-900">
+              <TabsTrigger 
+                value="complete" 
+                className="data-[state=active]:bg-gray-700"
+              >
+                ПРОЙТИ ИГРУ
+              </TabsTrigger>
+              <TabsTrigger 
+                value="exit" 
+                className="data-[state=active]:bg-gray-700"
+              >
+                ВЫЙТИ НА ГЛАВНУЮ
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="complete" className="mt-4">
+              <div className="text-center text-gray-300 mb-4">
+                <p>Просмотреть финальные субтитры и завершить игру.</p>
+                <p className="text-xs text-gray-500 mt-2">Ваш срок будет считаться отбытым.</p>
+              </div>
+              <div className="flex justify-center">
+                <Button
+                  variant="secondary"
+                  className="font-pixel bg-gray-700 hover:bg-gray-600"
+                  onClick={handleCompleteGame}
+                >
+                  ЗАВЕРШИТЬ ЗАКЛЮЧЕНИЕ
+                </Button>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="exit" className="mt-4">
+              <div className="py-2">
+                <p className="text-center text-gray-300 mb-3">Введите пароль для выхода на главную страницу:</p>
+                <Input
+                  type="password"
+                  placeholder="Введите пароль..."
+                  className="bg-gray-900 border-gray-700 text-gray-200 font-pixel text-center"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                />
+                {passwordError && (
+                  <p className="text-red-500 text-xs mt-2 text-center">{passwordError}</p>
+                )}
+              </div>
+              <div className="flex justify-center mt-4">
+                <Button
+                  variant="secondary"
+                  className="font-pixel bg-gray-700 hover:bg-gray-600"
+                  onClick={handlePasswordSubmit}
+                >
+                  ПОДТВЕРДИТЬ
+                </Button>
+              </div>
+            </TabsContent>
+          </Tabs>
         </DialogContent>
       </Dialog>
     </>
